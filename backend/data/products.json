@@ -1,0 +1,447 @@
+[
+  {
+    "id": 0,
+    "name": "Pink Kantha Floral Peplum Kurti",
+    "cat": "Pink",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#f06292",
+      "#fce4ec"
+    ],
+    "img": "/images/kurti-01.jpg"
+  },
+  {
+    "id": 1,
+    "name": "Sunshine Yellow Hibiscus Kurti",
+    "cat": "Yellow",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#e0b21b",
+      "#fff8dc"
+    ],
+    "img": "/images/kurti-02.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Midnight Blue Rose Print Kurti",
+    "cat": "Blue",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#1e3a6e",
+      "#e9a1a1"
+    ],
+    "img": "/images/kurti-03.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Mint Green Floral Kurti",
+    "cat": "Green",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#9acd6a",
+      "#f0f7ea"
+    ],
+    "img": "/images/kurti-04.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Lemon Garden Floral Kurti",
+    "cat": "Yellow",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#e9c629",
+      "#ffffff"
+    ],
+    "img": "/images/kurti-05.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Rani Pink Buti Print Kurti",
+    "cat": "Pink",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#d81b60",
+      "#f5d0c5"
+    ],
+    "img": "/images/kurti-06.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Fuchsia Floral Jaal Kurti",
+    "cat": "Pink",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#e91e8c",
+      "#fde4f0"
+    ],
+    "img": "/images/kurti-07.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Blush Paisley Kurti",
+    "cat": "Pink",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#f2a0a8",
+      "#fff0f0"
+    ],
+    "img": "/images/kurti-08.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Teal Kantha Floral Kurti",
+    "cat": "Blue",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#3aa0a8",
+      "#e6f6f6"
+    ],
+    "img": "/images/kurti-09.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Lilac Garden Print Kurti",
+    "cat": "Lilac",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#9a8bd8",
+      "#eef0fb"
+    ],
+    "img": "/images/kurti-10.jpg"
+  },
+  {
+    "id": 10,
+    "name": "Pink Bandhani Kurti",
+    "cat": "Pink",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#d81b72",
+      "#ffd966"
+    ],
+    "img": "/images/kurti-11.jpg"
+  },
+  {
+    "id": 11,
+    "name": "Maroon Jaal Print Kurti",
+    "cat": "Maroon",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#a0243a",
+      "#f5e6e6"
+    ],
+    "img": "/images/kurti-12.jpg"
+  },
+  {
+    "id": 12,
+    "name": "Baby Pink Hibiscus Kurti",
+    "cat": "Pink",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#f4a6c0",
+      "#ffffff"
+    ],
+    "img": "/images/kurti-13.jpg"
+  },
+  {
+    "id": 13,
+    "name": "Lilac Marigold Block Print Kurti",
+    "cat": "Lilac",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#f7f3ea",
+      "#b57cc4"
+    ],
+    "img": "/images/kurti-14.jpg"
+  },
+  {
+    "id": 14,
+    "name": "Maroon Hibiscus Kurti",
+    "cat": "Maroon",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#7a1f2b",
+      "#f0d9d9"
+    ],
+    "img": "/images/kurti-15.jpg"
+  },
+  {
+    "id": 15,
+    "name": "Ivory Teal Marigold Block Print Kurti",
+    "cat": "Blue",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#3f8f9a",
+      "#f7f3ea"
+    ],
+    "pos": "50% 55%",
+    "img": "/images/kurti-16.jpg"
+  },
+  {
+    "id": 16,
+    "name": "Wine Kantha Floral Kurti",
+    "cat": "Maroon",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#8a1f5c",
+      "#d4a537"
+    ],
+    "pos": "50% 55%",
+    "img": "/images/kurti-17.jpg"
+  },
+  {
+    "id": 17,
+    "name": "Red Floral Jaal Kurti",
+    "cat": "Maroon",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#c0233a",
+      "#fbe9e9"
+    ],
+    "pos": "50% 55%",
+    "img": "/images/kurti-18.jpg"
+  },
+  {
+    "id": 18,
+    "name": "Teal Hibiscus Print Kurti",
+    "cat": "Blue",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#0f7a8a",
+      "#e6f6f6"
+    ],
+    "pos": "50% 55%",
+    "img": "/images/kurti-19.jpg"
+  },
+  {
+    "id": 19,
+    "name": "Royal Blue Star Flower Kurti",
+    "cat": "Blue",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#1f4fa3",
+      "#f2f0e6"
+    ],
+    "pos": "50% 25%",
+    "img": "/images/kurti-20.jpg"
+  },
+  {
+    "id": 20,
+    "name": "Black Geometric Block Print Kurti",
+    "cat": "Black",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#1a1a1f",
+      "#f2f2f2"
+    ],
+    "pos": "50% 30%",
+    "img": "/images/kurti-21.jpg"
+  },
+  {
+    "id": 21,
+    "name": "Earthy Patchwork Print Kurti",
+    "cat": "Multi",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#b07a2a",
+      "#2b2118"
+    ],
+    "pos": "50% 25%",
+    "img": "/images/kurti-22.jpg"
+  },
+  {
+    "id": 22,
+    "name": "Black White Hibiscus Kurti",
+    "cat": "Black",
+    "price": 250,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "pal": [
+      "#1a1a1f",
+      "#f2f2f2"
+    ],
+    "pos": "50% 55%",
+    "img": "/images/kurti-23.jpg"
+  }
+]

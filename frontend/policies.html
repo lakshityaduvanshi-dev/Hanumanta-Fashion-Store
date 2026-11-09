@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Policies – Hanumanta Store</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600&display=swap">
+<style>
+:root{--bg:#faf7f4;--sf:#fff;--ink:#1b1720;--mut:#6f677a;--line:#e9e2db;--acc:#8a3156;color-scheme:light dark}
+@media(prefers-color-scheme:dark){:root{--bg:#120f15;--sf:#1e1923;--ink:#f3eee8;--mut:#a99fb2;--line:#2f2935;--acc:#e6a6c0}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.7 Manrope,system-ui,sans-serif}
+header{padding:18px clamp(16px,5vw,56px);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.logo{font:400 1.8rem "Instrument Serif",Georgia,serif;color:var(--ink);text-decoration:none}.logo i{color:var(--acc)}
+main{max-width:760px;margin:0 auto;padding:clamp(28px,6vw,64px) 20px 80px}
+nav{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 36px}nav a{border:1px solid var(--line);background:var(--sf);border-radius:99px;padding:7px 18px;color:var(--ink);text-decoration:none;font-size:.9rem}
+h1{font:400 clamp(2.4rem,6vw,3.6rem)/1.05 "Instrument Serif",Georgia,serif;margin:0 0 8px}
+h2{font:400 2rem/1.1 "Instrument Serif",Georgia,serif;margin:48px 0 10px;scroll-margin-top:20px}
+p,li{color:var(--mut)}li{margin:4px 0}.contact{background:var(--sf);border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin-top:36px}
+a.back{color:var(--ink)}
+</style></head><body>
+<header><a class="logo" href="/">Hanumanta<i> Store</i></a><a class="back" href="/">Back to shop</a></header>
+<main>
+<h1>Our policies</h1><p>Please read these before you order. If anything is unclear, contact us.</p>
+<nav><a href="#shipping">Shipping</a><a href="#returns">Returns</a><a href="#privacy">Privacy</a><a href="#terms">Terms</a></nav>
+
+<h2 id="shipping">Shipping and delivery</h2>
+<ul>
+<li>We deliver through our own delivery partners. Delivery usually takes 3 to 5 days after your order is confirmed.</li>
+<li>Delivery is free on orders of ₹<span class="js-fs">999</span> and above (after any discount). Below that, a shipping fee of ₹<span class="js-fee">99</span> applies.</li>
+<li>Payment is by <b>Cash on delivery</b> only. Please keep the exact amount ready.</li>
+<li>When your order is out for delivery you will see a 4-digit delivery code and the delivery partner's name and number. Give the code to the delivery partner only when you receive your order.</li>
+<li>We may not deliver to every PIN code. If we do not deliver to yours, the checkout will tell you.</li>
+</ul>
+
+<h2 id="returns">Returns and cancellations</h2>
+<ul>
+<li>You can cancel an order yourself from <b>My orders</b> until it is packed. After that, please contact us.</li>
+<li>You can return an unused kurti, with tags and in its original condition, within <b class="rdays">7</b> days of delivery.</li>
+<li><b>How to return:</b> open <b>My orders</b>, choose the delivered order, press <b>Return or refund</b>, select the items, tell us the reason, add a photo if the item is damaged or wrong, and enter your UPI ID for the refund.</li>
+<li>We review your request. If it is approved, our team arranges to collect the item. You can follow the status on the same page.</li>
+<li><b>Refunds:</b> because orders are paid by cash on delivery, we send the refund to the UPI ID (or bank account) you give us. We send it after the returned item reaches us and is checked, or earlier for low-value items when we tell you no pickup is needed. The refund is the price of the returned items; if the item was damaged, wrong or defective, we also refund the shipping fee you paid.</li>
+<li>A return may be refused if the item is used, washed, damaged by the customer, or returned after the return period. We will tell you the reason.</li>
+</ul>
+
+<h2 id="privacy">Privacy</h2>
+<p>We collect only what we need to take and deliver your order:</p>
+<ul>
+<li><b>Account details:</b> your name, mobile number, optional email, and a password (stored in a scrambled form, never in plain text).</li>
+<li><b>Addresses and location:</b> your delivery address, and a map point only if you press "Use my current location" or place the pin yourself.</li>
+<li><b>Orders:</b> what you ordered, when, and the delivery status.</li>
+<li><b>Newsletter:</b> your email, if you join the list.</li>
+</ul>
+<p>Your name, phone number, address and map point are shared with our team and the delivery partner assigned to your order, so they can deliver it. While your order is out for delivery, the delivery partner's live location is shown to you. We do not sell your data. We use a login cookie to keep you signed in; we do not use advertising cookies.</p>
+<p>You can ask us to correct or delete your data at any time by contacting us. Some order records may be kept as required for accounts and taxes.</p>
+
+<h2 id="terms">Terms of use</h2>
+<ul>
+<li>Prices are in Indian rupees. We may change prices or withdraw items; the price you see when you place the order is the price you pay.</li>
+<li>Stock is limited. If an item sells out before we confirm your order, we will tell you and cancel that order.</li>
+<li>Photos show the product as closely as possible; colours may look slightly different on different screens.</li>
+<li>Please give correct delivery details. We are not responsible for failed deliveries caused by a wrong address or phone number.</li>
+<li>You are responsible for keeping your password private.</li>
+</ul>
+
+<div class="contact" id="contact"><b>Contact us</b><div id="cinfo" style="color:var(--mut)">Please contact the store using the details on our website or social pages.</div></div>
+</main>
+<script>
+fetch("/api/config").then(r=>r.json()).then(d=>{document.querySelectorAll(".rdays").forEach(e=>e.textContent=d.returnDays);document.querySelectorAll(".js-fs").forEach(e=>e.textContent=d.freeShippingMin);document.querySelectorAll(".js-fee").forEach(e=>e.textContent=d.shippingFee);const s=d.store||{},l=[];const esc=x=>String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ if(s.phone)l.push("Phone: "+esc(s.phone));if(s.email)l.push('Email: <a href="mailto:'+esc(s.email)+'">'+esc(s.email)+"</a>");if(s.address)l.push("Address: "+esc(s.address));if(s.gstin)l.push("GSTIN: "+esc(s.gstin));
+ if(l.length)document.getElementById("cinfo").innerHTML=l.join("<br>")}).catch(()=>{});
+</script></body></html>

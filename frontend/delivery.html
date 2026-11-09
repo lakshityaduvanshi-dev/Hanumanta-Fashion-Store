@@ -1,0 +1,61 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hanumanta · Delivery partner</title>
+<style>
+:root{--bg:#f6f2ee;--sf:#fff;--ink:#1b1720;--mut:#7a727f;--line:#e6dfd8;--acc:#8a3156;color-scheme:light dark}
+@media(prefers-color-scheme:dark){:root{--bg:#120f15;--sf:#1e1923;--ink:#f3eee8;--mut:#a99fb2;--line:#2f2935;--acc:#e6a6c0}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:var(--sf);border-bottom:1px solid var(--line);position:sticky;top:0}
+header b{font-size:1.05rem}#who{display:flex;gap:8px;align-items:center;font-size:.9rem}main{max-width:640px;margin:0 auto;padding:18px}
+input,button{font:inherit;border-radius:12px}input{width:100%;padding:13px 14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);margin-bottom:10px}
+button{border:0;background:var(--ink);color:var(--bg);padding:13px 18px;cursor:pointer;font-weight:600}button.o{background:none;color:var(--ink);border:1px solid var(--line);padding:8px 14px;font-weight:500}
+.card{background:var(--sf);border:1px solid var(--line);border-radius:18px;padding:16px;margin:0 0 14px}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center}.m{color:var(--mut);font-size:.88rem}
+.chip{font-size:.75rem;font-weight:600;padding:3px 11px;border-radius:99px;background:#fff0d6;color:#8a5a00}.chip.p{background:#e8ecff;color:#2f3f9a}.chip.w{background:#eee;color:#555}.chip.d{background:#dff5e3;color:#1d6b32}
+a{color:var(--acc)}.act{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}.act a{flex:1;text-align:center;padding:12px;border:1px solid var(--line);border-radius:12px;text-decoration:none;font-weight:600;color:var(--ink)}
+.err{color:#c2264f;min-height:1.3em;font-size:.9rem}h2{margin:22px 0 10px;font-size:1.05rem}.otpi{width:130px;text-align:center;letter-spacing:.3em;font-size:1.2rem;margin:0}
+</style></head><body>
+<header><b>Hanumanta · Delivery</b><span id="who"></span></header>
+<div id="lm" class="m" style="padding:10px 18px 0;max-width:640px;margin:0 auto"></div>
+<main id="app"></main>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const api=async(p,m="GET",b)=>{const r=await fetch(p,{method:m,headers:b?{"Content-Type":"application/json"}:undefined,body:b?JSON.stringify(b):undefined});let d={};try{d=await r.json()}catch{}if(!r.ok)throw Object.assign(new Error(d.error||"Something went wrong."),{status:r.status});return d};
+let U=null,T=null,REASONS=[];fetch("/api/config").then(r=>r.json()).then(d=>{REASONS=d.failReasons||[]}).catch(()=>{});
+function login(msg=""){clearInterval(T);$("#who").innerHTML="";$("#app").innerHTML=`<form class="card" id="lf"><h2 style="margin-top:0">Partner login</h2><input name="phone" placeholder="Mobile number" inputmode="numeric" maxlength="10"><input name="password" type="password" placeholder="Password"><div class="err" id="e">${esc(msg)}</div><button style="width:100%">Log in</button><p><a href="#" onclick="resetView();return false">Forgot password?</a></p></form>`;
+ $("#lf").onsubmit=async e=>{e.preventDefault();try{const d=await api("/api/auth/login","POST",{phone:e.target.phone.value.trim(),password:e.target.password.value});if(d.user.role!=="delivery"){await api("/api/auth/logout","POST");throw new Error("This login is not a delivery partner account.")}U=d.user;home()}catch(err){$("#e").textContent=err.message}}}
+async function home(){$("#who").innerHTML=`${esc(U.name)} <button class="o" onclick="out()">Log out</button>`;await load();clearInterval(T);T=setInterval(load,20000)}
+async function out(){await api("/api/auth/logout","POST").catch(()=>{});syncTracking([]);U=null;login()}
+function resetView(){clearInterval(T);$("#app").innerHTML=`<form class="card" id="rf"><h2 style="margin-top:0">Reset password</h2><div class="m">Enter your mobile number and ask the store for a code. The store will tell you the code.</div><input name="phone" placeholder="Mobile number" inputmode="numeric" maxlength="10" style="margin-top:10px"><button type="button" class="o" onclick="ask()" style="margin-bottom:10px;width:100%">Ask the store for a code</button><input name="code" placeholder="6-digit code" inputmode="numeric" maxlength="6"><input name="password" type="password" placeholder="New password (6+ characters)"><div class="err" id="e"></div><button style="width:100%">Set new password</button><p><a href="#" onclick="login();return false">Back to log in</a></p></form>`;
+ $("#rf").onsubmit=async e=>{e.preventDefault();const f=e.target;try{await api("/api/auth/reset","POST",{phone:f.phone.value.trim(),code:f.code.value.trim(),password:f.password.value});login("Password changed. Please log in.")}catch(er){$("#e").textContent=er.message}}}
+async function ask(){try{await api("/api/auth/forgot","POST",{phone:$("#rf").phone.value.trim()});$("#e").style.color="var(--ink)";$("#e").textContent="Request sent. The store will contact you with a code."}catch(e){$("#e").textContent=e.message}}
+// Share the live location with the customer while an order is out for delivery
+let W=null,lastPos=null,lastSent=0,hb=null,wake=null;const setMsg=t=>{$("#lm").textContent=t};
+const push=()=>{if(!lastPos)return;lastSent=Date.now();api("/api/delivery/location","POST",lastPos).catch(()=>{})};
+function syncTracking(active){const need=active.some(o=>o.status==="out_for_delivery");
+ if(need&&W===null){if(!navigator.geolocation){setMsg("This phone cannot share its location.");return}
+  W=navigator.geolocation.watchPosition(p=>{lastPos={lat:p.coords.latitude,lng:p.coords.longitude};if(Date.now()-lastSent>=10000)push();setMsg("Sharing your live location with the customer. Keep this page open.")},
+   e=>setMsg(e.code===1?"Location is blocked. Allow location so the customer can see you on the map.":"Could not get your location."),{enableHighAccuracy:true,maximumAge:5000,timeout:20000});
+  hb=setInterval(()=>{if(lastPos&&Date.now()-lastSent>=15000)push()},5000); // also resend while standing still
+  if(navigator.wakeLock)navigator.wakeLock.request("screen").then(l=>{wake=l}).catch(()=>{})}
+ if(!need&&W!==null){navigator.geolocation.clearWatch(W);W=null;clearInterval(hb);lastPos=null;if(wake){wake.release();wake=null}setMsg("")}}
+const mapUrl=c=>c.lat!=null?`https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}`:`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.address+" "+c.city+" "+c.pin)}`;
+function card(o){const c=o.customer,cod=o.payment==="Cash on delivery",chip={new:["w","Waiting"],failed:["w","Not delivered"],confirmed:["w","Waiting to be packed"],packed:["p","Ready for pickup"],out_for_delivery:["","On the way"],delivered:["d","Delivered"],cancelled:["w","Cancelled"]}[o.status];
+ let act="";if(o.status==="packed")act=`<button onclick="go('${o.orderId}','out_for_delivery')">Start delivery</button>`;
+ if(o.status==="out_for_delivery")act=`<div class="act" style="align-items:center"><input class="otpi" id="otp-${o.orderId}" placeholder="OTP" inputmode="numeric" maxlength="4"><button onclick="done('${o.orderId}')">Mark delivered</button></div><div class="m">Ask the customer for their 4-digit delivery code.</div><details style="margin-top:14px"><summary class="m" style="cursor:pointer">Could not deliver?</summary><select id="fr-${o.orderId}" style="width:100%;padding:11px;margin:8px 0;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)">${REASONS.map(r=>`<option>${esc(r)}</option>`).join("")}</select><button class="o" onclick="fail('${o.orderId}')">Mark as not delivered</button></details>`;
+ return `<div class="card" id="c-${o.orderId}"><div class="row"><b>${o.orderId}</b><span class="chip ${chip[0]}">${chip[1]}</span></div>
+ <div style="margin:8px 0"><b>${esc(c.name)}</b><br>${esc(c.address)}, ${esc(c.city)} ${esc(c.pin)}</div>
+ <div class="m">${o.items.map(i=>`${esc(i.name)} (${esc(i.size)}) × ${i.qty}`).join("<br>")}</div>
+ <div style="margin:8px 0"><b>${cod?"Collect ₹"+o.total+" cash":"Payment: "+esc(o.payment)+" (₹"+o.total+")"}</b></div>
+ ${["packed","out_for_delivery"].includes(o.status)?`<div class="act"><a href="tel:${esc(c.phone)}">Call customer</a><a href="${mapUrl(c)}" target="_blank" rel="noopener">Open in Maps</a></div>`:""}
+ <div style="margin-top:12px">${act}</div><div class="err" id="er-${o.orderId}"></div></div>`}
+async function load(){if(document.querySelector("details[open]"))return; // do not refresh while the partner is choosing a reason
+ try{const cash=await api("/api/delivery/cash");window.__cash=cash}catch(e){}
+ try{const {orders}=await api("/api/delivery/orders"),a=orders.filter(o=>!["delivered","cancelled"].includes(o.status)),h=orders.filter(o=>o.status==="delivered").slice(0,10);
+ const keep={};document.querySelectorAll(".otpi").forEach(i=>keep[i.id]=i.value);
+ const cs=window.__cash||{pending:0,orders:[],recent:[]};
+ $("#app").innerHTML=`<div class="card"><div class="row"><b>Cash with you</b><b>₹${cs.pending}</b></div><div class="m">${cs.orders.length} delivered cash order${cs.orders.length===1?"":"s"} not yet handed to the store.${cs.recent.length?" Last handover: ₹"+cs.recent[0].amount+" on "+new Date(cs.recent[0].createdAt).toLocaleDateString("en-IN",{day:"numeric",month:"short"})+".":""}</div></div><h2>To deliver (${a.length})</h2>${a.map(card).join("")||'<div class="card m">No orders assigned right now. This page refreshes by itself.</div>'}${h.length?`<h2>Delivered recently</h2>${h.map(card).join("")}`:""}`;
+ for(const k in keep){const i=document.getElementById(k);if(i)i.value=keep[k]}syncTracking(a)}catch(e){if(e.status===401)login("Please log in.");else $("#app").insertAdjacentHTML("afterbegin",`<div class="err">${esc(e.message)}</div>`)}}
+function fail(id){if(!confirm("Mark this order as NOT delivered? The order goes back to the store."))return;go(id,"failed",undefined,document.getElementById("fr-"+id).value)}
+async function go(id,s,otp,reason){try{await api(`/api/delivery/orders/${id}/status`,"POST",{status:s,otp,reason});await load()}catch(e){const el=document.getElementById("er-"+id);if(el)el.textContent=e.message}}
+function done(id){go(id,"delivered",document.getElementById("otp-"+id).value.trim())}
+api("/api/me").then(d=>{if(d.user&&d.user.role==="delivery"){U=d.user;home()}else login()}).catch(()=>login());
+</script></body></html>

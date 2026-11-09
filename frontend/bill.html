@@ -1,0 +1,38 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bill</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eee;color:#111;font:14px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+.bar{background:#1b1720;color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;position:sticky;top:0}.bar a,.bar button{color:#fff;background:#444;border:0;border-radius:8px;padding:7px 14px;font:inherit;text-decoration:none;cursor:pointer}.bar a.on{background:#8a3156}
+.page{background:#fff;max-width:760px;margin:16px auto;padding:34px 38px;box-shadow:0 2px 14px rgba(0,0,0,.12)}
+h1{font:600 1.5rem Georgia,serif;margin:0}h2{font-size:1rem;margin:18px 0 6px}.row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}.m{color:#555;font-size:12px}
+table{width:100%;border-collapse:collapse;margin:14px 0}th,td{border-bottom:1px solid #ddd;padding:8px 6px;text-align:left}th{font-size:12px;color:#555}td.r,th.r{text-align:right}
+.tot{margin-left:auto;width:260px}.tot div{display:flex;justify-content:space-between;padding:3px 0}.tot .g{border-top:2px solid #111;font-weight:700;font-size:1.1rem;margin-top:4px;padding-top:6px}
+.slip .big{font:700 2.2rem Georgia,serif}.slip .to{border:2px solid #111;border-radius:10px;padding:14px 18px;font-size:1.15rem;margin:14px 0}.slip .cod{border:2px dashed #111;border-radius:10px;padding:10px 16px;font:700 1.3rem system-ui;margin:12px 0;text-align:center}
+.box{display:inline-block;width:16px;height:16px;border:2px solid #111;border-radius:3px;vertical-align:-3px;margin-right:8px}
+@media print{body{background:#fff}.bar{display:none}.page{box-shadow:none;margin:0;max-width:none;padding:18px;page-break-after:always}.page:last-child{page-break-after:auto}}
+</style></head><body>
+<div class="bar" id="bar"></div><div id="out"><div class="page">Loading…</div></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const q=new URLSearchParams(location.search),type=q.get("type")==="slip"?"slip":"bill",adminMode=type==="slip"||q.get("admin")==="1";let ak=sessionStorage.getItem("ak")||"";
+const ids=(q.get("ids")||q.get("id")||"").split(",").map(s=>s.trim()).filter(s=>/^HS\d+$/.test(s));
+const inr=n=>"₹"+Number(n).toLocaleString("en-IN"),dt=d=>new Date(d).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"});
+function bill(o,S){const c=o.customer;return `<div class="page"><div class="row"><div><h1>${esc(S.name||"Store")}</h1><div class="m">${esc(S.address||"")}${S.phone?"<br>Phone: "+esc(S.phone):""}${S.email?"<br>"+esc(S.email):""}${S.gstin?"<br>GSTIN: "+esc(S.gstin):""}</div></div><div style="text-align:right"><b>Bill / order receipt</b><br>No. <b>${o.orderId}</b><br><span class="m">${dt(o.createdAt)}</span></div></div>
+ <h2>Billed and delivered to</h2><div>${esc(c.name)}<br>${esc(c.phone)}<br>${esc(c.address)}, ${esc(c.city)} ${esc(c.pin)}</div>
+ <table><tr><th>Item</th><th>Size</th><th class="r">Qty</th><th class="r">Price</th><th class="r">Amount</th></tr>${o.items.map(i=>`<tr><td>${esc(i.name)}</td><td>${esc(i.size)}</td><td class="r">${i.qty}</td><td class="r">${inr(i.price)}</td><td class="r">${inr(i.price*i.qty)}</td></tr>`).join("")}</table>
+ <div class="tot"><div><span>Subtotal</span><span>${inr(o.subtotal)}</span></div>${o.discount?`<div><span>Discount${o.coupon?" ("+esc(o.coupon)+")":""}</span><span>−${inr(o.discount)}</span></div>`:""}<div><span>Shipping</span><span>${o.shipping?inr(o.shipping):"Free"}</span></div><div class="g"><span>Total</span><span>${inr(o.total)}</span></div></div>
+ <p class="m" style="margin-top:20px">Payment: ${esc(o.payment)}. Thank you for shopping with ${esc(S.name||"us")}.</p></div>`}
+function slip(o,S){const c=o.customer;return `<div class="page slip"><div class="row"><div class="big">${o.orderId}</div><div style="text-align:right">${dt(o.createdAt)}<br><b>PACKING SLIP</b></div></div>
+ <div class="to"><b>Deliver to</b><br>${esc(c.name)}<br>${esc(c.phone)}<br>${esc(c.address)}<br>${esc(c.city)} ${esc(c.pin)}</div>
+ <table><tr><th>Pack</th><th>Item</th><th>Size</th><th class="r">Qty</th></tr>${o.items.map(i=>`<tr><td><span class="box"></span></td><td>${esc(i.name)}</td><td><b>${esc(i.size)}</b></td><td class="r"><b>${i.qty}</b></td></tr>`).join("")}</table>
+ ${o.payment==="Cash on delivery"?`<div class="cod">COLLECT ${inr(o.total)} CASH ON DELIVERY</div>`:`<div class="m">Payment: ${esc(o.payment)}</div>`}
+ <div class="m">Packed by: ____________________ &nbsp;&nbsp; ${esc(S.name||"")}</div></div>`}
+(async()=>{
+ const key=ids.length>1?"ids":"id";
+ $("#bar").innerHTML=`<button onclick="print()">Print</button>${adminMode?`<a class="${type==="bill"?"on":""}" href="?admin=1&${key}=${ids.join(",")}">Bill</a><a class="${type==="slip"?"on":""}" href="?type=slip&${key}=${ids.join(",")}">Packing slip</a>`:""}<span class="m" style="color:#ccc">${ids.length} ${type==="slip"?"packing slip":"bill"}${ids.length===1?"":"s"}</span>`;
+ if(!ids.length){$("#out").innerHTML='<div class="page">No order selected.</div>';return}
+ if(adminMode&&!ak){$("#out").innerHTML='<div class="page"><b>Store admin</b><p>Enter your admin key to see this page.</p><input id="kk" type="password" placeholder="Admin key" style="padding:9px;border:1px solid #999;border-radius:8px"> <button id="kb" style="padding:9px 16px;border:0;border-radius:8px;background:#1b1720;color:#fff">Open</button></div>';const go=()=>{sessionStorage.setItem("ak",$("#kk").value);location.reload()};$("#kb").onclick=go;$("#kk").onkeydown=e=>{if(e.key==="Enter")go()};return}
+ try{const S=((await (await fetch("/api/config")).json()).store)||{},pages=[];
+  for(const id of ids){const r=await fetch(adminMode?"/api/admin/orders/"+id:"/api/orders/"+id,{headers:adminMode?{"x-admin-key":ak}:{}}),d=await r.json();if(!r.ok)throw new Error(d.error||"Could not load "+id);pages.push((type==="slip"?slip:bill)(d.order,S))}
+  $("#out").innerHTML=pages.join("")}catch(e){$("#out").innerHTML=`<div class="page">${esc(e.message)}${adminMode?'<br><br><a href="#" onclick="sessionStorage.removeItem(\'ak\');location.reload();return false">Enter the admin key again</a>':"<br><br>Please log in to the shop on this browser to see your bill."}</div>`}
+})();
+</script></body></html>
